@@ -14,6 +14,8 @@ import {
   Title,
 } from "chart.js";
 import { Pie, Bar } from "react-chartjs-2";
+import Image from "next/image";
+import { UserStats, GitHubRepo } from "@/types/github";
 
 ChartJS.register(
   ArcElement,
@@ -28,7 +30,7 @@ ChartJS.register(
 export default function Home() {
   const { data: session } = useSession();
   const [loading, setLoading] = useState(false);
-  const [stats, setStats] = useState<any>(null);
+  const [stats, setStats] = useState<UserStats | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -71,11 +73,11 @@ export default function Home() {
 
   const repoChartData = stats
     ? {
-        labels: stats.topRepos.map((repo: any) => repo.name),
+        labels: stats.topRepos.map((repo: GitHubRepo) => repo.name),
         datasets: [
           {
             label: "星星数",
-            data: stats.topRepos.map((repo: any) => repo.stargazers_count),
+            data: stats.topRepos.map((repo: GitHubRepo) => repo.stargazers_count),
             backgroundColor: "#36A2EB",
           },
         ],
@@ -104,10 +106,12 @@ export default function Home() {
             <div className="flex justify-between items-center mb-8">
               <div className="flex items-center">
                 {stats?.profile?.avatar_url && (
-                  <img
+                  <Image
                     src={stats.profile.avatar_url}
                     alt="Profile"
-                    className="w-16 h-16 rounded-full mr-4"
+                    width={64}
+                    height={64}
+                    className="rounded-full mr-4"
                   />
                 )}
                 <div>
@@ -181,7 +185,7 @@ export default function Home() {
                 <div className="bg-white p-6 rounded-xl shadow-md md:col-span-2">
                   <h3 className="text-xl font-semibold mb-4">热门仓库列表</h3>
                   <div className="space-y-4">
-                    {stats.topRepos.map((repo: any) => (
+                    {stats.topRepos.map((repo: GitHubRepo) => (
                       <div
                         key={repo.id}
                         className="border p-4 rounded-lg hover:bg-gray-50"

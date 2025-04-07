@@ -1,4 +1,5 @@
 import { Octokit } from "octokit";
+import { GitHubUser, GitHubRepo, UserStats } from "@/types/github";
 
 export class GitHubService {
   private octokit: Octokit;
@@ -7,12 +8,12 @@ export class GitHubService {
     this.octokit = new Octokit({ auth: accessToken });
   }
 
-  async getUserProfile() {
+  async getUserProfile(): Promise<GitHubUser> {
     const { data } = await this.octokit.rest.users.getAuthenticated();
-    return data;
+    return data as GitHubUser;
   }
 
-  async getUserRepos() {
+  async getUserRepos(): Promise<GitHubRepo[]> {
     const profile = await this.getUserProfile();
     const { data } = await this.octokit.rest.repos.listForUser({
       username: profile.login,
@@ -20,10 +21,10 @@ export class GitHubService {
       per_page: 100,
       type: "all"
     });
-    return data;
+    return data as GitHubRepo[];
   }
 
-  async getUserStats() {
+  async getUserStats(): Promise<UserStats> {
     const profile = await this.getUserProfile();
     const repos = await this.getUserRepos();
 
