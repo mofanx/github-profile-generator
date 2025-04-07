@@ -4,8 +4,6 @@
 
 GitHub个人档案生成器是一个基于Next.js开发的Web应用，它能够通过GitHub API获取用户的GitHub数据，并生成精美的个人档案页面。该应用展示用户的基本信息、仓库统计、编程语言分布以及热门仓库等信息。
 
-这个项目是为了参加GitHub Developer Program而创建的，它展示了如何构建与GitHub集成的应用程序。
-
 ## 功能特点
 
 - **GitHub OAuth登录**：使用GitHub账号安全登录
